@@ -1,0 +1,12 @@
+---
+# tasks file for cr_rp_conf---
+# tasks file for mongoc
+- name: create rs.initiate config
+  shell: mongo --port 27019 --ssl --sslPEMKeyFile /etc/ssl/mongodb.pem --sslAllowInvalidCertificates --eval 'rs.initiate({_id:"config01",members:[{"_id":0,"host":"{{ config_primary }}:27019"}]})'
+
+- name: create rs.initiate config
+  shell: mongo --port 27019 --ssl --sslPEMKeyFile /etc/ssl/mongodb.pem --sslAllowInvalidCertificates --eval 'rs.add("{{ item }}:27019")'
+  with_items: "{{ config_secondary }}"
+
+- name: Pause for a while
+  pause: seconds=20

@@ -1,0 +1,12 @@
+---
+# tasks file for start_mongo- name: Start the mongodb service
+- name: start mongodb
+  service:
+    name: mongod
+    state: started
+  environment:
+    LC_ALL: C
+
+- name: Pause for a while
+  pause: seconds=20
+

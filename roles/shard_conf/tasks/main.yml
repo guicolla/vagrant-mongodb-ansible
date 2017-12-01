@@ -1,0 +1,16 @@
+---
+# tasks file for shard_conf:
+- lineinfile:
+    path: /etc/mongod.conf
+    regexp: 'port: 27017'
+    line: '  port: 27018'
+
+- lineinfile:
+    path: /etc/mongod.conf
+    regexp: '#replication:'
+    line: "replication:\n  replSetName: rs0"
+
+- lineinfile:
+    path: /etc/mongod.conf
+    regexp: '#sharding:'
+    line: "sharding:\n  clusterRole: shardsvr"

@@ -1,0 +1,46 @@
+---
+# tasks file for mongo_conf---
+# tasks file for mongodb
+- name: create data directory for mongodb
+  file: path={{ mongodb_datadir_prefix }}/mongo-{{ inventory_hostname }} state=directory owner=mongod group=mongod
+
+- name: create log directory for mongodb
+  file: path=/var/log/mongo state=directory owner=mongod group=mongod
+
+- name: create run directory for mongodb
+  file: path=/var/run/mongo state=directory owner=mongod group=mongod
+
+- name: Create the mongodb startup file
+  template: src=mongod.j2 dest=/etc/init.d/mongod-{{ inventory_hostname }} mode=0655
+
+- name: Create the mongodb configuration file
+  template: src=mongod.conf.j2 dest=/etc/mongod-{{ inventory_hostname }}.conf
+
+- name: create mongodb secret
+  copy: src={{ secret_path }} dest=/etc/ssl/mongodb.secret mode=0400
+
+- name: Create the ssl configuration file
+  template: src={{ pem_path }} dest=/etc/ssl/
+
+- name: chown mongodb.secret
+  shell: chown mongod:mongod /etc/ssl/mongodb.secret
+#- name: export lc_all
+- lineinfile:
+    path: "{{ user_path  }}"
+    line: export LC_ALL=C
+
+#- name: export lc_all root
+- lineinfile:
+    path: /root/.bashrc
+    line: export LC_ALL=C
+
+- lineinfile:
+    path: /etc/mongod.conf
+    regexp: 'bindIp: 127.0.0.1'
+    line: '  bindIp: 0.0.0.0'
+
+- name: inserte ssl em mongodb.conf
+  lineinfile:
+    path: /etc/mongod.conf
+    insertafter: "bindIp: 0.0.0.0"
+    line: "  ssl:\n    mode: requireSSL \n    PEMKeyFile: /etc/ssl/mongodb.pem"

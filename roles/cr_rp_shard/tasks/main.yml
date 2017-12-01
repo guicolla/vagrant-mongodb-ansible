@@ -1,0 +1,13 @@
+---
+# tasks file for cr_rp_shard---
+# tasks file for mongos
+- name: create rs.initiate config
+  shell: mongo --port 27018 --ssl --sslPEMKeyFile /etc/ssl/mongodb.pem --sslAllowInvalidCertificates --eval 'rs.initiate({_id:"rs0",members:[{"_id":0,"host":"{{ shard_primary }}:27018"}]})'
+  delegate_to: "{{ shard_primary }}"
+
+- name: create rs.initiate config
+  shell: mongo --port 27018 --ssl --sslPEMKeyFile /etc/ssl/mongodb.pem --sslAllowInvalidCertificates --eval 'rs.add("{{ item }}:27018")'
+  with_items: "{{ shard_secondary }}"
+
+- name: Pause for a while
+  pause: seconds=20

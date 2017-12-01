@@ -1,0 +1,10 @@
+---
+# tasks file for create_key
+- name: insert secret
+  lineinfile:
+    path: /etc/mongod.conf
+    regexp: ^#security
+    line: "security:\n  keyFile: /etc/ssl/mongodb.secret"
+
+- name: restart mongo
+  shell: service mongod restart

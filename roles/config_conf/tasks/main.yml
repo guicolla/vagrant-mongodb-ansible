@@ -1,0 +1,16 @@
+---
+# tasks file for config_conf
+- lineinfile:
+    path: /etc/mongod.conf
+    regexp: 'port: 27017'
+    line: '  port: 27019'
+
+- lineinfile:
+    path: /etc/mongod.conf
+    regexp: '#replication:'
+    line: "replication:\n  replSetName: config01"
+
+- lineinfile:
+    path: /etc/mongod.conf
+    regexp: '#sharding:'
+    line: "sharding:\n  clusterRole: configsvr"

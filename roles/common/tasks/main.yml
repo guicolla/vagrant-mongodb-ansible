@@ -1,0 +1,27 @@
+---
+# tasks file for common
+- name: Create the hosts file for all machines
+  template: src=hosts.j2 dest=/etc/hosts
+
+- name: Create the repository for 10Gen
+  copy: src=10gen.repo.j2 dest=/etc/yum.repos.d/10gen.repo
+
+- name: Create the EPEL Repository.
+  copy: src=epel.repo.j2 dest=/etc/yum.repos.d/epel.repo
+
+- name: Create the GPG key for EPEL
+  copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
+
+- name: create mongo repository
+  copy: src=mongodb-org-3.4.repo dest=/etc/yum.repos.d/mongodb-org-3.4.repo
+
+- name: Create the mongod user
+  user: name=mongod comment="MongoD"
+
+- name: Create the data directory for the namenode metadata
+  file: path={{ mongodb_datadir_prefix }} owner=mongod group=mongod state=directory
+
+- name: Install the mongodb package
+  yum: name={{ item }} state=installed
+  with_items:
+   - mongodb-org

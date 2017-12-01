@@ -1,0 +1,8 @@
+---
+# tasks file for create_user---
+# tasks file for user_pem
+- name: add the admin user
+  command: "mongo --port 27019 --ssl --sslPEMKeyFile /etc/ssl/mongodb.pem --sslAllowInvalidCertificates --eval 'db.createUser({user: \"admin\",pwd: \"admin\",roles: [{role: \"root\", db: \"admin\"}]})'"
+  ignore_errors: yes
+  delegate_to: "{{ config_primary }}"
+

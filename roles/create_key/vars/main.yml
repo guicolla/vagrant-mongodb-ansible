@@ -1,0 +1,31 @@
+---
+# vars file for mongodb
+secret_path: /root/cluster_mongo/mongodb.secret
+pem_path: /root/cluster_mongo/mongodb.pem
+user_path: /home/vagrant/.bashrc
+admin_user: admin
+admin_pass: admin
+mongodb_datadir_prefix: /data/
+mongod_port: 27017
+
+config_cluster: 
+  - config1
+  - config2
+
+shard_cluster:
+  - shard1
+  - shard2
+
+cluster:
+  - config1
+  - config2
+  - shard1
+  - shard2
+
+config_primary: config1
+shard_primary: shard1
+shard_secondary:
+  - shard2
+
+config_secondary:
+  - config2

@@ -1,0 +1,5 @@
+---
+# vars file for common
+mongodb_datadir_prefix: /data/
+iface: '{{ ansible_default_ipv4.interface }}'
+#iface: '{{ ansible_eth1_ipv4.address }}'

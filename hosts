@@ -1,0 +1,14 @@
+#The site wide list of mongodb servers
+[config_cluster]
+config1
+config2
+
+[shard_cluster]
+shard1
+shard2
+
+[config_primary]
+config1
+
+[shard_primary]
+shard1

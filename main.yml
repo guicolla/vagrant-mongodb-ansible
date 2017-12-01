@@ -1,0 +1,53 @@
+- hosts: all
+  become: true
+  become_user: root
+  roles:
+  - role: common
+
+- hosts: all
+  become: true
+  become_user: root
+  roles:
+  - role: mongo_conf
+
+- hosts: shard_cluster
+  become: true
+  become_user: root
+  roles:
+  - role: shard_conf
+
+- hosts: config_cluster
+  become: true
+  become_user: root
+  roles:
+  - role: config_conf
+
+- hosts: all
+  become: true
+  become_user: root
+  roles:
+  - role: start_mongo
+
+- hosts: config_primary
+  become: true
+  become_user: root
+  roles:
+  - role: cr_rp_conf
+
+- hosts: shard_primary
+  become: true
+  become_user: root
+  roles:
+  - role: cr_rp_shard
+
+- hosts: config_primary
+  become: true
+  become_user: root
+  roles:
+  - role: create_user
+
+- hosts: all
+  become: true
+  become_user: root
+  roles:
+  - role: create_key
